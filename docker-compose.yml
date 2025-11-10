@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  okta-mock:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: okta-mock-server
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=development
+      - OKTA_DOMAIN=${OKTA_DOMAIN:-localhost:8080}
+      - OKTA_API_TOKEN=${OKTA_API_TOKEN:-test-api-token-12345}
+      - LOG_LEVEL=${LOG_LEVEL:-debug}
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+      - ./logs:/app/logs
+    networks:
+      - okta-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Opcional: Container para testes do SDK Node.js
+  okta-sdk-test:
+    image: node:18-alpine
+    container_name: okta-sdk-test-client
+    working_dir: /test
+    volumes:
+      - ./test-client:/test
+    environment:
+      - OKTA_CLIENT_ORGURL=http://okta-mock:8080
+      - OKTA_CLIENT_TOKEN=test-api-token-12345
+    networks:
+      - okta-network
+    depends_on:
+      okta-mock:
+        condition: service_healthy
+    command: ["sh", "-c", "npm install && npm test"]
+    profiles:
+      - test
+
+networks:
+  okta-network:
+    driver: bridge
+
+volumes:
+  okta-data:
+    driver: local

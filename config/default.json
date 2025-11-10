@@ -1,0 +1,44 @@
+{
+  "port": 8080,
+  "domain": "localhost:8080",
+  "apiToken": "test-api-token-12345",
+  "jwtSecret": "your-secret-key-change-in-production",
+  "tokenExpiration": 3600,
+  "enableCors": true,
+  "logLevel": "debug",
+  "mockData": {
+    "seedData": true,
+    "initialUsers": [
+      {
+        "profile": {
+          "firstName": "John",
+          "lastName": "Doe",
+          "email": "john.doe@example.com",
+          "login": "john.doe@example.com"
+        }
+      },
+      {
+        "profile": {
+          "firstName": "Jane",
+          "lastName": "Smith",
+          "email": "jane.smith@example.com",
+          "login": "jane.smith@example.com"
+        }
+      }
+    ],
+    "initialGroups": [
+      {
+        "profile": {
+          "name": "Developers",
+          "description": "Development team group"
+        }
+      },
+      {
+        "profile": {
+          "name": "Administrators",
+          "description": "Admin group"
+        }
+      }
+    ]
+  }
+}
