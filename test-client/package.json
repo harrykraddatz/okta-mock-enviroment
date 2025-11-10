@@ -1,0 +1,13 @@
+{
+  "name": "okta-sdk-test-client",
+  "version": "1.0.0",
+  "description": "Cliente de teste para Okta SDK Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test-sdk.js"
+  },
+  "dependencies": {
+    "@okta/okta-sdk-nodejs": "^7.0.0",
+    "dotenv": "^16.3.1"
+  }
+}
